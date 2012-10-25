@@ -21,7 +21,7 @@ class HSPHFieldManagementReport(GenericTabularReport, CustomProjectReport, Proje
     @property
     def selected_dctl(self):
         if self._selected_dctl is None:
-            self._selected_dctl = self.request.GET.get(NameOfDCTLField.slug, '')
+            self._selected_dctl = self.report_request.GET.get(NameOfDCTLField.slug, '')
         return self._selected_dctl
 
     _dctl_fixture = None
@@ -145,7 +145,7 @@ class FieldDataCollectionActivityReport(HSPHFieldManagementReport):
     @property
     def facilities(self):
         if self._facilities is None:
-            selected_fac = self.request.GET.get(FacilityField.slug, '')
+            selected_fac = self.report_request.GET.get(FacilityField.slug, '')
             if selected_fac:
                 self._facilities = [selected_fac]
             else:
@@ -293,7 +293,7 @@ class HVFollowUpStatusSummaryReport(HVFollowUpStatusReport):
     @property
     def case_status(self):
         if self._case_status is None:
-            self._case_status = self.request.GET.get(SelectCaseStatusField.slug, None)
+            self._case_status = self.report_request.GET.get(SelectCaseStatusField.slug, None)
         return self._case_status
 
     @property

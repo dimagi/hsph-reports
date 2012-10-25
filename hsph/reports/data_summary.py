@@ -76,7 +76,7 @@ class PrimaryOutcomeReport(GenericTabularReport, DataSummaryReport, HSPHSiteData
         if not self.selected_site_map:
             self._selected_site_map = self.site_map
 
-        if self.request_params.get(SelectReferredInStatusField.slug) == 'referred':
+        if self.report_request.params.get(SelectReferredInStatusField.slug) == 'referred':
             keys = self.generate_keys(["site referred_in"])
         else:
             keys = self.generate_keys(["site"])

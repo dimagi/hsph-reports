@@ -17,9 +17,9 @@ class HSPHSiteDataMixin(object):
     def selected_site_map(self):
         if self._selected_site_map is None:
             site_map = {}
-            region = self.request.GET.get(SiteField.slugs['region'], None)
-            district = self.request.GET.get(SiteField.slugs['district'], None)
-            site = self.request.GET.get(SiteField.slugs['site'], None)
+            region = self.report_request.GET.get(SiteField.slugs['region'], None)
+            district = self.report_request.GET.get(SiteField.slugs['district'], None)
+            site = self.report_request.GET.get(SiteField.slugs['site'], None)
             if region:
                 site_map[region] = dict(districts=self.site_map[region].get("districts", {}),
                     name=self.site_map[region].get("name", ""))

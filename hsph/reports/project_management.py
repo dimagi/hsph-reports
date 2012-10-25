@@ -25,21 +25,21 @@ class ProjectStatusDashboardReport(ProjectManagementReport):
     @property
     def region(self):
         if self._region is None:
-            self._region = self.request.GET.get(SiteField.slugs['region'], None)
+            self._region = self.report_request.GET.get(SiteField.slugs['region'], None)
         return self._region
 
     _district = None
     @property
     def district(self):
         if self._district is None:
-            self._district = self.request.GET.get(SiteField.slugs['district'], None)
+            self._district = self.report_request.GET.get(SiteField.slugs['district'], None)
         return self._district
 
     _site = None
     @property
     def site(self):
         if self._site is None:
-            self._site = self.request.GET.get(SiteField.slugs['site'], None)
+            self._site = self.report_request.GET.get(SiteField.slugs['site'], None)
         return self._site
 
     @property
@@ -133,14 +133,14 @@ class ImplementationStatusDashboardReport(GenericTabularReport, ProjectManagemen
     @property
     def facility_status(self):
         if self._facility_status is None:
-            self._facility_status = self.request.GET.get(FacilityStatusField.slug)
+            self._facility_status = self.report_request.GET.get(FacilityStatusField.slug)
         return self._facility_status
 
     _facility_type = None
     @property
     def facility_type(self):
         if self._facility_type is None:
-            self._facility_type = self.request.GET.get(IHForCHFField.slug)
+            self._facility_type = self.report_request.GET.get(IHForCHFField.slug)
         return self._facility_type
 
     @property
