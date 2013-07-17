@@ -222,7 +222,7 @@ class FacilityField(BaseSingleOptionFilter):
 
     @property
     def options(self):
-        return [(f['val'], f['text'] for f in self.getFacilities())]
+        return [(f['val'], f['text']) for f in self.getFacilities()]
 
     @classmethod
     def getFacilities(cls, domain=None):
