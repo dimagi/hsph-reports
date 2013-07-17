@@ -65,7 +65,7 @@ class FIDAPerformanceReport(GenericTabularReport, CustomProjectReport,
     
     fields = [
         'corehq.apps.reports.fields.FilterUsersField',
-        'corehq.apps.reports.fields.DatespanField',
+        'corehq.apps.reports.filters.dates.DatespanFilter',
         'hsph.fields.DCTLToFIDAFilter',
     ]
 
@@ -213,7 +213,7 @@ class FacilityRegistrationsReport(GenericTabularReport, CustomProjectReport,
     name = "Facility Registrations"
     slug = "hsph_facility_registrations"
     fields = ['corehq.apps.reports.fields.FilterUsersField',
-              'corehq.apps.reports.fields.DatespanField',
+              'corehq.apps.reports.filters.dates.DatespanFilter',
               'hsph.fields.DCTLToFIDAFilter',
               'hsph.fields.SiteField']
 
@@ -395,7 +395,7 @@ class CaseReport(CaseListReport, CustomProjectReport, HSPHSiteDataMixin,
     
     fields = (
         'corehq.apps.reports.fields.FilterUsersField',
-        'corehq.apps.reports.fields.DatespanField',
+        'corehq.apps.reports.filters.dates.DatespanFilter',
         'hsph.fields.SiteField',
         'hsph.fields.AllocatedToFilter',
         'hsph.fields.DCTLToFIDAFilter',
@@ -529,7 +529,7 @@ class FacilityWiseFollowUpReport(GenericTabularReport, DatespanMixin,
                                  ProjectReportParametersMixin):
     name = "Facility Wise Follow Up Report"
     slug = "hsph_facility_wise_follow_up"
-    fields = ['corehq.apps.reports.fields.DatespanField',
+    fields = ['corehq.apps.reports.filters.dates.DatespanFilter',
               'hsph.fields.DCTLToFIDAFilter',
               'hsph.fields.SiteField']
 

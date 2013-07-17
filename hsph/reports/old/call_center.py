@@ -1,6 +1,7 @@
 import datetime
 from casexml.apps.case.models import CommCareCaseAction
 from corehq.apps.api.es import FullCaseES
+from corehq.apps.reports.filters.dates import DatespanFilter
 from corehq.apps.reports.generic import GenericTabularReport
 from corehq.apps.reports.basic import BasicTabularReport, Column
 from corehq.apps.reports.standard import (DatespanMixin,
@@ -9,7 +10,7 @@ from corehq.apps.reports.standard.inspect import CaseDisplay, CaseListReport
 from corehq.apps.reports.datatables import DataTablesHeader, DataTablesColumn
 from hsph.reports import HSPHSiteDataMixin
 from hsph.fields import NameOfCATIField, AllocatedToFilter
-from corehq.apps.reports.fields import FilterUsersField, DatespanField
+from corehq.apps.reports.fields import FilterUsersField
 from couchdbkit_aggregate.fn import mean, unique_count
 from casexml.apps.case import const
 from dimagi.utils.decorators.memoized import memoized
@@ -40,7 +41,7 @@ class CATIPerformanceReport(CustomProjectReport, ProjectReportParametersMixin,
                             DatespanMixin, BasicTabularReport):
     name = "CATI Performance Report"
     slug = "cati_performance"
-    field_classes = (FilterUsersField, DatespanField, NameOfCATIField)
+    field_classes = (FilterUsersField, DatespanFilter, NameOfCATIField)
             
     filter_group_name = "CATI"
     
@@ -213,7 +214,7 @@ class CaseReport(CaseListReport, CustomProjectReport, HSPHSiteDataMixin,
     
     fields = (
         'corehq.apps.reports.fields.FilterUsersField',
-        'corehq.apps.reports.fields.DatespanField',
+        'corehq.apps.reports.filters.dates.DatespanFilter',
         'hsph.fields.SiteField',
         #'hsph.fields.AllocatedToFilter',
         'corehq.apps.reports.fields.SelectOpenCloseField',
@@ -350,7 +351,7 @@ class CallCenterFollowUpSummaryReport(GenericTabularReport,
     name = "Call Center Follow Up Summary"
     slug = "hsph_dcc_followup_summary"
 
-    fields = ['corehq.apps.reports.fields.DatespanField',
+    fields = ['corehq.apps.reports.filters.dates.DatespanFilter',
               'hsph.fields.SiteField']
 
     @property
