@@ -1,8 +1,7 @@
-from corehq.apps.reports.fields import ReportField, ReportSelectField
+from corehq.apps.reports.fields import ReportField
 from corehq.apps.reports.fields import SelectFilteredMobileWorkerField
 from corehq.apps.fixtures.models import FixtureDataType, FixtureDataItem
-from corehq.apps.reports.filters.base import (BaseSingleOptionFilter,
-    BaseDrilldownOptionFilter)
+from corehq.apps.reports.filters.base import BaseSingleOptionFilter
 from corehq.apps.reports.filters.users import LinkedUserFilter
 
 
@@ -80,23 +79,22 @@ class NameOfCITLField(SelectFilteredMobileWorkerField):
     cssId = "citl_name"
     group_names = ["CITL"]
 
-class NameOfDCTLField(ReportSelectField):
-    slug = "dctl_name"
-    name = "Name of DCTL"
-    cssId = "dctl_name"
-    domain = 'hsph'
-    default_option = "All DCTLs..."
-    cssClasses = "span3"
 
-    def update_params(self):
-        super(NameOfDCTLField, self).update_params()
-        self.options = self.get_dctl_list()
+class NameOfDCTLField(BaseSingleOptionFilter):
+    domain = 'hsph'
+    slug = "dctl_name"
+    label = "Name of DCTL"
+    default_text = "All DCTLs..."
+
+    @property
+    def options(self):
+        return self.get_dctl_list()
 
     @classmethod
     def get_dctl_list(cls):
         data_type = FixtureDataType.by_domain_tag(cls.domain, 'dctl').first()
         data_items = FixtureDataItem.by_data_type(cls.domain, data_type.get_id if data_type else None)
-        return [dict(text=item.fields.get("name"), val=item.fields.get("id")) for item in data_items]
+        return [(item.fields.get("name"), item.fields.get("id")) for item in data_items]
 
     @classmethod
     def get_users_per_dctl(cls):
@@ -112,12 +110,10 @@ class DCTLToFIDAFilter(LinkedUserFilter):
     domain = 'hsph'
     user_types = ("DCTL", "FIDA")
 
+
 class AllocatedToFilter(BaseSingleOptionFilter):
     slug = "allocated_to"
     label = "Allocated To"
-    cssId = 'allocated_to'
-    cssClasses = "span2"
-
     options = [
         ('cati', 'CATI'),
         ('field', 'Field')
@@ -125,34 +121,34 @@ class AllocatedToFilter(BaseSingleOptionFilter):
     default_text = "All"
 
 
-class SelectReferredInStatusField(ReportSelectField):
+class SelectReferredInStatusField(BaseSingleOptionFilter):
     slug = "referred_in_status"
-    name = "Referred In Status"
-    cssId = "hsph_referred_in_status"
-    cssClasses = "span3"
-    options = [dict(val="referred", text="Only Referred In Births")]
-    default_option = "All Birth Data"
+    label = "Referred In Status"
+    default_text = "All Birth Data"
+    options = [
+        ('referred', "Only Referred In Births"),
+    ]
 
 
-class SelectCaseStatusField(ReportSelectField):
+class SelectCaseStatusField(BaseSingleOptionFilter):
     slug = "case_status"
-    name = "Home Visit Status"
-    cssId = "hsph_case_status"
-    cssClasses = "span2"
-    options = [dict(val="closed", text="CLOSED"),
-               dict(val="open", text="OPEN")]
-    default_option = "Select Status..."
+    label = "Home Visit Status"
+    default_text = "Select Status..."
+    options = [
+        ('closed', "CLOSED"),
+        ('open', "OPEN"),
+    ]
 
 
-class IHForCHFField(ReportSelectField):
+class IHForCHFField(BaseSingleOptionFilter):
     slug = "ihf_or_chf"
-    name = "IHF/CHF"
+    label = "IHF/CHF"
     domain = 'hsph'
-    cssId = "hsph_ihf_or_chf"
-    cssClasses = "span2"
-    options = [dict(val="IHF", text="IHF only"),
-               dict(val="CHF", text="CHF only")]
-    default_option = "IHF and CHF"
+    default_text = "IHF and CHF"
+    options = [
+        ('IHF', "IHF only"),
+        ('CHF', "CHF only"),
+    ]
 
     @classmethod
     def _get_facilities(cls, domain=None):
@@ -206,29 +202,27 @@ class IHForCHFField(ReportSelectField):
                      in cls._get_facilities(domain).items()])
 
 
-class FacilityStatusField(ReportSelectField):
+class FacilityStatusField(BaseSingleOptionFilter):
     slug = "facility_status"
-    name = "Facility Status"
-    cssId = "hsph_facility_status"
-    cssClasses = "span4"
-    options = [dict(val="-1", text="On Board"),
-               dict(val="0", text="S.B.R. Deployed"),
-               dict(val="1", text="Baseline"),
-               dict(val="2", text="Trial Data")]
-    default_option = "Select Status..."
+    label = "Facility Status"
+    default_text = "Select Status..."
+    options = [
+        ('-1', "On Board"),
+        ('0', "S.B.R. Deployed"),
+        ('1', "Baseline"),
+        ('2', "Trial Data"),
+    ]
 
 
-class FacilityField(ReportSelectField):
+class FacilityField(BaseSingleOptionFilter):
     slug = "facility"
     domain = 'hsph'
-    name = "Facility"
-    cssId = "hsph_facility_name"
-    default_option = "All Facilities..."
-    cssClasses = "span3"
+    label = "Facility"
+    default_text = "All Facilities..."
 
-    def update_params(self):
-        super(FacilityField, self).update_params()
-        self.options = self.getFacilities()
+    @property
+    def options(self):
+        return [(f['val'], f['text'] for f in self.getFacilities())]
 
     @classmethod
     def getFacilities(cls, domain=None):
