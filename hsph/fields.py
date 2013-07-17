@@ -1,8 +1,7 @@
 from corehq.apps.reports.fields import ReportField
-from corehq.apps.reports.fields import SelectFilteredMobileWorkerField
 from corehq.apps.fixtures.models import FixtureDataType, FixtureDataItem
 from corehq.apps.reports.filters.base import BaseSingleOptionFilter
-from corehq.apps.reports.filters.users import LinkedUserFilter
+from corehq.apps.reports.filters.users import LinkedUserFilter, BaseGroupedMobileWorkerFilter
 
 
 class SiteField(ReportField):
@@ -39,44 +38,38 @@ class SiteField(ReportField):
         return facs
 
 
-class NameOfFADAField(SelectFilteredMobileWorkerField):
+class NameOfFADAField(BaseGroupedMobileWorkerFilter):
     slug = "fada_name"
-    name = "Name of FADA"
+    label = "Name of FADA"
     group_names = ["Role - FADA"]
-    cssId = "fada_name"
-    show_only_group_option = False
-    default_option = "All FADAs"
+    default_text = "All FADAs"
 
 
-class NameOfFIDAField(SelectFilteredMobileWorkerField):
+class NameOfFIDAField(BaseGroupedMobileWorkerFilter):
     slug = "fida_name"
-    name = "Name of FIDA"
+    label = "Name of FIDA"
     group_names = ["Role - FIDA"]
-    cssId = "fida_name"
-    show_only_group_option = False
-    default_option = "All FIDAs"
+    default_text = "All FIDAs"
 
-class NameOfCATIField(SelectFilteredMobileWorkerField):
+
+class NameOfCATIField(BaseGroupedMobileWorkerFilter):
     slug = "cati_name"
-    name = "Name of CATI"
-    cssId = "cati_name"
+    label = "Name of CATI"
     group_names = ["Role - CATI"]
-    show_only_group_option = False
-    default_option = "All CATIs"
+    default_text = "All CATIs"
 
-class NameOfCATITLField(SelectFilteredMobileWorkerField):
+
+class NameOfCATITLField(BaseGroupedMobileWorkerFilter):
     slug = "cati_tl_name"
-    name = "Name of CATI TL"
-    cssId = "cati_tl_name"
+    label = "Name of CATI TL"
     group_names = ["Role - CATI TL"]
-    show_only_group_option = False
-    default_option = "All CATI TLs"
+    default_text = "All CATI TLs"
     
 
-class NameOfCITLField(SelectFilteredMobileWorkerField):
+class NameOfCITLField(BaseGroupedMobileWorkerFilter):
     slug = "citl_name"
-    name = "Name of CITL"
-    cssId = "citl_name"
+    label = "Name of CITL"
+    default_text = "All CITLs"
     group_names = ["CITL"]
 
 
