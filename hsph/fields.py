@@ -1,23 +1,30 @@
-from corehq.apps.reports.fields import ReportField
 from corehq.apps.fixtures.models import FixtureDataType, FixtureDataItem
-from corehq.apps.reports.filters.base import BaseSingleOptionFilter
+from corehq.apps.reports.filters.base import BaseSingleOptionFilter, BaseReportFilter
 from corehq.apps.reports.filters.users import LinkedUserFilter, BaseGroupedMobileWorkerFilter
 
 
-class SiteField(ReportField):
+class SiteField(BaseReportFilter):
     slug = "hsph_site"
     domain = 'hsph'
     slugs = dict(site="hsph_site",
             district="hsph_district",
             region="hsph_region")
-    template = "hsph/fields/sites.html"
 
-    def update_context(self):
-        self.context['sites'] = self.getFacilities(domain=self.domain)
-        self.context['selected'] = dict(region=self.request.GET.get(self.slugs['region'], ''),
+    label = ""  # because a label is required and this is a refactored super old filter
+
+    template = "hsph/fields/sites.html"
+    # note, take a look at reports/filters/base.html if you are thinking of using this as an example
+    # this template likely doesn't follow the new paradigm
+
+    @property
+    def filter_context(self):
+        return {
+            'sites': self.getFacilities(domain=self.domain),
+            'selected': dict(region=self.request.GET.get(self.slugs['region'], ''),
                                         district=self.request.GET.get(self.slugs['district'], ''),
-                                        siteNum=self.request.GET.get(self.slugs['site'], ''))
-        self.context['slugs'] = self.slugs
+                                        siteNum=self.request.GET.get(self.slugs['site'], '')),
+            'slugs': self.slugs
+        }
 
     @classmethod
     def getFacilities(cls, domain=None):
